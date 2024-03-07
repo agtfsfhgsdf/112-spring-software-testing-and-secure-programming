@@ -35,6 +35,6 @@ test("Test Student's getName", () => {
     // TODO
     student.setName('John');    
     assert.strictEqual(student.getName(), "John","正確");
-    assert.strictEqual(student.getName(),null,"錯誤");
+    assert.strictEqual(student.getName(),'',"錯誤");
         throw new Error("Test not implemented");    
 }); 
