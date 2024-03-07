@@ -6,39 +6,35 @@ const myClass = new MyClass();
 test("Test MyClass's addStudent", ()=>{
     // TODO      
         student.setName("John");
-        if (!(student instanceof Student)) {
-            return -1;
-        }
-        this.students.push(student);
-        return this.students.length - 1;
-        student.setName(111);
+        const newStudentId = myClass.addStudent(student);
+        assert.strictEqual(newStudentId, 0,"正確");
+        const notstudentID=111;
+        const newStudentId2 = myClass.addStudent(notstudentID);
+        assert.strictEqual(newStudentId2,-1,"錯誤");
        throw new Error("Test not implemented");
 }); 
 test("Test MyClass's getStudentById", () => {
     // TODO 
-    const newStudentId = myClass.addStudent(student);
-    const newStudentName = myClass.getStudentById(newStudentId).getName();
-    return this.students[0];
-    return this.students[1];
-    return this.students[2];
-    return this.students[3];
+    student.setName("kevin");
+    myClass.addStudent(student);
+    const newStudentName = myClass.getStudentById(0);
+    assert.strictEqual(newStudentName.getName(), "kevin","正確");
+    const newStudentName = myClass.getStudentById(-1);
+    assert.strictEqual(newStudentName, null,"錯誤");
     throw new Error("Test not implemented");
 });
 test("Test Student's setName", () => {
     // TODO
         student.setName('John');
-        if (typeof userName !== 'string') {
-            return;
-        }   
-        this.name = userName;      
+        assert.strictEqual(student.name, "John","正確");
+        student.setName(111);
+        assert.strictEqual(student.name,111,"錯誤");    
     throw new Error("Test not implemented");
 });
 test("Test Student's getName", () => {
     // TODO
-        student.getName();
-        if (this.name === undefined) {
-            return '';
-        }
-        return this.name;       
+    student.setName('John');    
+    assert.strictEqual(student.getName(), "John","正確");
+    assert.strictEqual(student.getName(),null,"錯誤");
         throw new Error("Test not implemented");    
 }); 
