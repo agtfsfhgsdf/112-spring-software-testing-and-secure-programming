@@ -19,7 +19,7 @@ test("Test MyClass's getStudentById", () => {
     myClass.addStudent(student);
     const newStudentName = myClass.getStudentById(0);
     assert.strictEqual(newStudentName.getName(), "kevin","正確");
-    const newStudentName = myClass.getStudentById(-1);
+    newStudentName = myClass.getStudentById(-1);
     assert.strictEqual(newStudentName, null,"錯誤");
     throw new Error("Test not implemented");
 });
