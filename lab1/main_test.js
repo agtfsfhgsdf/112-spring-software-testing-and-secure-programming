@@ -22,25 +22,24 @@ test("Test MyClass's getStudentById", () => {
     myClass.addStudent(student);
     const newStudentName = myClass.getStudentById(0);
     assert.strictEqual(newStudentName.getName(), "kevin","正確");
-    newStudentName = myClass.getStudentById(-1);
-    assert.strictEqual(newStudentName, null,"錯誤");
+    const newStudentName2 = myClass.getStudentById(-1);
+    assert.strictEqual(newStudentName2, null,"錯誤");
    
 });
 test("Test Student's setName", () => {
     // TODO
         const student = new Student();
-	const myClass = new MyClass();  
-        student.setName('John');
-        assert.strictEqual(student.name, "John","正確");
+        student.setName("John");
+        assert.strictEqual(student.getName(), "John","正確");
         student.setName(111);
-        assert.strictEqual(student.name,111,"錯誤");    
-    
+        assert.strictEqual(student.getName(),"John","錯誤");    
+   
 });
 test("Test Student's getName", () => {
     // TODO
        const student = new Student();
-	const myClass = new MyClass();  
-    student.setName('John');    
+       assert.strictEqual(student.getName(),'',"錯誤");
+    student.setName("John");    
     assert.strictEqual(student.getName(), "John","正確");
-    assert.strictEqual(student.getName(),'',"錯誤");
+    
 }); 
