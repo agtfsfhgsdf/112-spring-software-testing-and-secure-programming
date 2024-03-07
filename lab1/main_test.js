@@ -12,10 +12,7 @@ test("Test MyClass's addStudent", ()=>{
         this.students.push(student);
         return this.students.length - 1;
         student.setName(111);
-        if (!(student instanceof Student)) {
-            return -1;
-        }
-    throw new Error("Test not implemented");
+       throw new Error("Test not implemented");
 }); 
 test("Test MyClass's getStudentById", () => {
     // TODO 
