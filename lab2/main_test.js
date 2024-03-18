@@ -19,13 +19,14 @@ test('should be able to write mail', () => {
     const mailSystem = new MailSystem();
     const context = mailSystem.write('test');
     assert.strictEqual(context, 'Congrats, test!');
-	
+	assert.strictEqual(mailSystem.write(null), 'null');
+	assert.strictEqual(mailSystem.write(1111), '1111');
 });
 // Test MailSystem : send()
 test('should be able to send mail', () => {
     const mailSystem = new MailSystem();
     const success = mailSystem.send('test', 'test');
-    test.mock.method(Math, 'random', () => 0.6);
+    test.mock.method(Math, 'random', () => 1);
     assert.strictEqual(mailSystem.send('ok', 'success'),true);
     test.mock.method(Math, 'random', () => 0.4);
     assert.strictEqual(mailSystem.send('fa', 'fail'),false);
@@ -49,28 +50,43 @@ test('should selected', () => {
 // Test Application : getRandomPerson()
 test('should be able to get random person', () => {
     const app = new Application();
-    app.peo = ['john', 'john1', 'john2'];
-    const person = app.getRandomPerson();
+    test.mock.method(Math, 'random', () => 0);
+    assert.strictEqual(app.getRandomPerson(), 'john');
     test.mock.method(Math, 'random', () => 0.2);
-    assert(app.peo.includes(person));
+    assert.strictEqual(app.getRandomPerson(), 'john1');
+    test.mock.method(Math, 'random', () => 1);
+    assert.strictEqual(app.getRandomPerson(), 'john2');
     
 });
 // Test Application : selectNextPerson()
 test('should be able to select next person', () => {
     const app = new Application();
-    const person = app.selectNextPerson();
+    const person = app.getNames();
+	app.selected = ['john'];
     let cn = 0;
     test.mock.method(app, 'getRandomPerson', () => {
         if (cn <= person.length) { 
             return person[0][cn++]; 
         }
      });
+	assert.strictEqual(app.selectNextPerson(), 'john1');
+    assert.deepStrictEqual(app.selected, ['john', 'john1']);
+    assert.strictEqual(app.selectNextPerson(), 'john2');
+    assert.deepStrictEqual(app.selected, ['john', 'john1', 'john2']);
+    assert.strictEqual(app.selectNextPerson(), null);
+ 
 });
 // Test Application : notifySelected()
 test('should be able to notify selected', () => {
     const app = new Application();
+    app.people = ['john', 'john1', 'john2'];
+    app.selected = ['john', 'john1', 'john2'];
+    app.mailSystem.send = test.mock.fn(app.mailSystem.send);
+    app.mailSystem.write = test.mock.fn(app.mailSystem.write);
     app.notifySelected();
-    assert.ok(app);
+    assert.strictEqual(app.mailSystem.send.mock.calls.length, 3);
+    assert.strictEqual(app.mailSystem.write.mock.calls.length, 3);
+
 });
 
 test('should not been selected ', () => {
