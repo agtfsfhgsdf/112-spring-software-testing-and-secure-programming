@@ -17,10 +17,9 @@ test('should name_list.txt ', ()=>{
 //test mailSystem : write()
 test('should be able to write mail', () => {
     const mailSystem = new MailSystem();
-    const context = mailSystem.write('test');
-    assert.strictEqual(context, 'Congrats, test!');
-	assert.strictEqual(mailSystem.write(null), 'null');
-	assert.strictEqual(mailSystem.write(1111), '1111');
+    assert.strictEqual(mailSystem.write('test'), 'Congrats, test!');
+    assert.strictEqual(mailSystem.write(null), 'Congrats, null!');
+    assert.strictEqual(mailSystem.write(1111), 'Congrats, 1111!');
 });
 // Test MailSystem : send()
 test('should be able to send mail', () => {
@@ -48,28 +47,29 @@ test('should selected', () => {
 });
 
 // Test Application : getRandomPerson()
-test('should be able to get random person', () => {
+test('should be able to get random person',  async (test) => {
     const app = new Application();
+    const names = await app.getNames();
     test.mock.method(Math, 'random', () => 0);
     assert.strictEqual(app.getRandomPerson(), 'john');
-    test.mock.method(Math, 'random', () => 0.2);
+    test.mock.method(Math, 'random', () => 0.4);
     assert.strictEqual(app.getRandomPerson(), 'john1');
-    test.mock.method(Math, 'random', () => 1);
+    test.mock.method(Math, 'random', () => 0.7);
     assert.strictEqual(app.getRandomPerson(), 'john2');
     
 });
 // Test Application : selectNextPerson()
-test('should be able to select next person', () => {
+test('should be able to select next person', async (test) => {
     const app = new Application();
-    const person = app.getNames();
-	app.selected = ['john'];
+    const person = await app.getNames();
+    app.selected = ['john'];
     let cn = 0;
     test.mock.method(app, 'getRandomPerson', () => {
         if (cn <= person.length) { 
             return person[0][cn++]; 
         }
      });
-	assert.strictEqual(app.selectNextPerson(), 'john1');
+    assert.strictEqual(app.selectNextPerson(), 'john1');
     assert.deepStrictEqual(app.selected, ['john', 'john1']);
     assert.strictEqual(app.selectNextPerson(), 'john2');
     assert.deepStrictEqual(app.selected, ['john', 'john1', 'john2']);
