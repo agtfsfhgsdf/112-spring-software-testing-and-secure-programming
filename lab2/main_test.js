@@ -3,12 +3,17 @@ const assert = require('assert');
 const { Application, MailSystem } = require('./main');
 //write tests use Stub, Mock, and Spy when necessary
 const fs = require('fs');
-const util = require('util');
-const readFile = util.promisify(fs.readFile);
-test.mock.method(fs, 'readFile', (file, options, callback) => { 
-    callback(null, 'john\njohn1\njohn2');
-}
-);
+const path = require('path');
+test('should name_list.txt ', ()=>{
+    const Listna = 'john\njohn1\njohn2';
+    const tmppa = path.join('name_list.txt');
+    fs.writeFileSync(tmppa,Listna);
+    process.on('exit', () => {
+        if (tmppa) {
+         fs.unlinkSync(tmppa);
+        }
+    });
+});
 //test mailSystem : write()
 test('should be able to write mail', () => {
     const mailSystem = new MailSystem();
@@ -31,6 +36,15 @@ test('should be able to get names', async () => {
     const names = await app.getNames();
     assert.ok(names);
 });
+// Test Application : selected
+test('should selected', () => {
+    const app = new Application();
+    app.pe= ['john', 'john1', 'john2'];
+    app.sel = ['john', 'john1', 'john2'];
+    const result = app.selectNextPerson();
+    assert.strictEqual(result, null);
+});
+
 // Test Application : getRandomPerson()
 test('should be able to get random person', () => {
     const app = new Application();
@@ -54,4 +68,23 @@ test('should be able to notify selected', () => {
     const app = new Application();
     app.notifySelected();
     assert.ok(app);
+});
+
+test('should not been selected ', () => {
+    const app = new Application();
+    let getRandomPersonCallCount = 0;
+    app.getRandomPerson = () => {
+        switch (getRandomPersonCallCount++) {
+            case 0:
+                return 'john';
+            case 1:
+                return 'john1';
+            case 2:
+                return 'john2';
+        }
+    };
+    app.selected = ['john', 'john1'];
+    const result = app.selectNextPerson();
+    assert.strictEqual(result, 'john2'); 
+    assert.strictEqual(getRandomPersonCallCount, 3); 
 });
