@@ -69,7 +69,6 @@ test('should be able to notify selected', () => {
     app.notifySelected();
     assert.ok(app);
 });
-
 test('should not been selected ', () => {
     const app = new Application();
     let getRandomPersonCallCount = 0;
@@ -87,4 +86,13 @@ test('should not been selected ', () => {
     const result = app.selectNextPerson();
     assert.strictEqual(result, 'john2'); 
     assert.strictEqual(getRandomPersonCallCount, 3); 
+});
+test('should write and send person', () => {
+     const app = new Application();
+     this.writeCallCount = 0;
+     this.sendCallCount = 0;
+     app.selected = ['john', 'john1', 'john2'];
+    app.notifySelected();
+    assert.strictEqual(this.writeCallCount, 0);
+    assert.strictEqual(this.sendCallCount, 0);
 });
