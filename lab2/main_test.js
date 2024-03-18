@@ -49,8 +49,10 @@ test('should selected', () => {
 // Test Application : getRandomPerson()
 test('should be able to get random person', () => {
     const app = new Application();
+    app.peo = ['john', 'john1', 'john2'];
     const person = app.getRandomPerson();
-    test.mock.method(Math, 'random', () => 0);
+    test.mock.method(Math, 'random', () => 0.2);
+    assert(app.peo.includes(person));
     
 });
 // Test Application : selectNextPerson()
