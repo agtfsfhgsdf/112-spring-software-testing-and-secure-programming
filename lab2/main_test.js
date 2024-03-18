@@ -14,7 +14,7 @@ test('should be able to write mail', () => {
     const mailSystem = new MailSystem();
     const context = mailSystem.write('test');
     assert.strictEqual(context, 'Congrats, test!');
-   	
+	
 });
 // Test MailSystem : send()
 test('should be able to send mail', () => {
@@ -36,6 +36,7 @@ test('should be able to get random person', () => {
     const app = new Application();
     const person = app.getRandomPerson();
     test.mock.method(Math, 'random', () => 0);
+    
 });
 // Test Application : selectNextPerson()
 test('should be able to select next person', () => {
