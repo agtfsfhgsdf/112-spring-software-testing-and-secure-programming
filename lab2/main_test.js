@@ -33,8 +33,9 @@ test('should be able to send mail', () => {
 // Test Application : getNames()
 test('should be able to get names', async () => {
     const app = new Application();
-    const names = await app.getNames();
-    assert.ok(names);
+    const [names,sel] = await app.getNames('john', 'john1', 'john2');
+    assert.deepStrictEqual(names, ['john', 'john1', 'john2']);
+    assert.deepStrictEqual(sel, []);
 });
 // Test Application : selected
 test('should selected', () => {
@@ -69,6 +70,7 @@ test('should be able to notify selected', () => {
     app.notifySelected();
     assert.ok(app);
 });
+
 test('should not been selected ', () => {
     const app = new Application();
     let getRandomPersonCallCount = 0;
@@ -86,13 +88,16 @@ test('should not been selected ', () => {
     const result = app.selectNextPerson();
     assert.strictEqual(result, 'john2'); 
     assert.strictEqual(getRandomPersonCallCount, 3); 
-});
+});     
+
 test('should write and send person', () => {
      const app = new Application();
      this.writeCallCount = 0;
      this.sendCallCount = 0;
+     this.writeCallCount++;
+     this.sendCallCount++;
      app.selected = ['john', 'john1', 'john2'];
     app.notifySelected();
-    assert.strictEqual(this.writeCallCount, 0);
-    assert.strictEqual(this.sendCallCount, 0);
+    assert.strictEqual(this.writeCallCount, 1);
+    assert.strictEqual(this.sendCallCount, 1);
 });
