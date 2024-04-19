@@ -30,6 +30,5 @@ const puppeteer = require('puppeteer');
     console.log(fullTitle);
 
     // Close the browser
-    await browser.close();    
-
+    await browser.close();
 })();
