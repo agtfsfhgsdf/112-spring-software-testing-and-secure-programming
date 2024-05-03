@@ -15,7 +15,6 @@ answer=""
 
 cd $tmp_dir
 
-pip install angr
 rm -rf *
 cp $solution_path/Makefile .
 cp $solution_path/*.c .
