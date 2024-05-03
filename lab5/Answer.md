@@ -1,21 +1,32 @@
 # Answer
 
+
 Name: 陶國華
 ID: 511558016
+
 
 ## Test Valgrind and ASan
 ### Result
 |                      | Valgrind | Asan |
 | -------------------- | -------- | ---- |
+
 | Heap out-of-bounds   |     O    |  O   |
 | Stack out-of-bounds  |     X    |  O   |
 | Global out-of-bounds |     X    |  O   |
 | Use-after-free       |     O    |  O   |
 | Use-after-return     |     X    |  O   |
 
+| Heap out-of-bounds   |          |      |
+| Stack out-of-bounds  |          |      |
+| Global out-of-bounds |          |      |
+| Use-after-free       |          |      |
+| Use-after-return     |          |      |
+
+
 ### Heap out-of-bounds
 #### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int main() {
@@ -26,9 +37,11 @@ int main() {
     return 0;
 }
 
+
 ```
 #### Valgrind Report
 ```
+
 valgrind --leak-check=full --show-leak-kinds=all ./abc 
 ==48460== Memcheck, a memory error detector
 ==48460== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
@@ -56,10 +69,13 @@ valgrind --leak-check=full --show-leak-kinds=all ./abc
 ==48460== 
 ==48460== For lists of detected and suppressed errors, rerun with: -s
 ==48460== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+=======
+
 
 ```
 ### ASan Report
 ```
+
 gcc -fsanitize=address -o abcc abc.c 
 
 ./abcc   
@@ -110,11 +126,15 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==50791==ABORTING
+=======
+
+
 ```
 
 ### Stack out-of-bounds
 #### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int main(){
@@ -123,10 +143,13 @@ int main(){
     array[8] = 0xff;
     return 0;
 }
+=======
+
 
 ```
 #### Valgrind Report
 ```
+
 valgrind --leak-check=full --show-leak-kinds=all ./abc
 ==55661== Memcheck, a memory error detector
 ==55661== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
@@ -195,11 +218,18 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==55960==ABORTING
+=======
+
+```
+### ASan Report
+```
+
 ```
 
 ### Global out-of-bounds
 #### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int array[8];
@@ -273,11 +303,23 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==57727==ABORTING
+=======
+
+```
+#### Valgrind Report
+```
+
+```
+### ASan Report
+```
+
+
 ```
 
 ### Use-after-free
 #### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int main() {
@@ -361,11 +403,23 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==58755==ABORTING
+=======
+
+```
+#### Valgrind Report
+```
+
+```
+### ASan Report
+```
+
+
 ```
 
 ### Use-after-return
 #### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int *array;
@@ -452,11 +506,23 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==59710==ABORTING
+=======
+
+```
+#### Valgrind Report
+```
+
+```
+### ASan Report
+```
+
+
 ```
 
 ## ASan Out-of-bound Write bypass Redzone
 ### Source code
 ```
+
 #include <stdio.h>
 #include <stdlib.h>
 int main(){
@@ -470,3 +536,8 @@ int main(){
 redzone是在變數分配時在記憶體前後取一段記憶體加上防護偵測overflow，
 此例a、b皆為32bytes，a右側與b左側都為redzone，對齊記憶體排列及設計該段redzone為32bytes，
 故a[8]~a[15]為redzone，a[16] == b[0]。
+=======
+
+```
+### Why
+
